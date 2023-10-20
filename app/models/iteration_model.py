@@ -1,4 +1,4 @@
-from project_model import ProjectModel
+from models.project_model import ProjectModel
 
 
 class IterationModel(ProjectModel):
@@ -10,6 +10,7 @@ class IterationModel(ProjectModel):
         """创建迭代
 
         Args:
+            name(str) 迭代名称
             project_id (str):  项目 id
             start_time (int):  时间戳
             end_time (int):  时间戳
