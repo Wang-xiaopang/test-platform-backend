@@ -46,7 +46,7 @@ class MongoModel:
         """
         self.db[col_name].update_one(tag_data, {"$set": new_datas})
 
-    def find_data(self, col_name, tag_data, need_data={'_id':1}):
+    def find_data(self, col_name, tag_data, need_data={"_id": 1}):
         """查找一条数据
 
         Args:
@@ -59,7 +59,7 @@ class MongoModel:
         cursor = self.db[col_name].find_one(tag_data, need_data)
         return cursor
 
-    def find_datas(self, col_name, tag_datas, need_data={'_id':1}):
+    def find_datas(self, col_name, tag_datas, need_data={"_id": 1}):
         """_summary_
 
         Args:
