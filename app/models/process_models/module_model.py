@@ -5,6 +5,8 @@ class ModuleModel(ProjectModel):
     def __init__(self):
         super().__init__()
         self.module_col = "module"
+        self.db[self.module_col].create_index([('name',1),('project_id',1)],unique = True)
+
 
     def create_module(self, name, project_id):
         """创建模块
@@ -17,10 +19,10 @@ class ModuleModel(ProjectModel):
         # 检查是否有该项目
         check_project = self.check_project(project_id)
         if check_project:
-            self.insert_data(
+            return self.insert_data(
                 self.module_col,
                 {
-                    "project_id": check_project,
+                    "project_id": check_project.get('_id'),
                     "name": name,
                     "created_at": self.get_now_timestamp(),
                 },
@@ -56,6 +58,6 @@ class ModuleModel(ProjectModel):
         # 检查是否有该模块
         check_project = self.check_project(project_id)
         if check_project:
-            return self.find_datas(self.module_col, {"project_id": check_project})
+            return self.find_datas(self.module_col, {"project_id": check_project.get('_id')})
         else:
             return

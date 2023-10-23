@@ -1,9 +1,7 @@
-from models.process_models.module_model import ModuleModel
 from models.process_models.demand_model import DemandModel
-from models.process_models.label_model import LabelModel
+from models.process_models.module_model import ModuleModel
 
-
-class CaseModel(ModuleModel, DemandModel, LabelModel):
+class CaseModel(DemandModel,ModuleModel):
     def __init__(self):
         super().__init__()
         self.case_col = "case"
@@ -40,24 +38,24 @@ class CaseModel(ModuleModel, DemandModel, LabelModel):
             # 判断模块是否存在,不在就新增
             module_check = self.check_module_name(module_name)
             if module_check:
-                module_id = module_check
+                module_id = module_check.get('_id')
             else:
-                module_id = self.create_module(module_name, project_id)
+                module_id = self.create_module(module_name, project_id).inserted_id
             second_cases = case.get("cases")
             test_cases = []
             for test_case in second_cases:
-                test_case["project_id"] = project_id
+                test_case["project_id"] = self.str_to_object(project_id)
                 test_case["module_id"] = module_id
                 if demand_name:
-                    test_case["iteration_id"] = iteration_id
+                    test_case["iteration_id"] = self.str_to_object(iteration_id)
                     test_case["demand_id"] = demand_id
                 test_cases.append(test_case)
             result.extend(test_cases)
         return result
 
-    def create_cases(self, data):
+    def create_cases(self, project_id,data,iteration_id=None):
         # 处理数据
-        result = self.case_data_deal(data)
+        result = self.case_data_deal(project_id,data,iteration_id)
         return self.insert_datas(self.case_col, result)
 
     def check_case(self, case_id):
@@ -96,3 +94,5 @@ class CaseModel(ModuleModel, DemandModel, LabelModel):
         check_case = self.check_case(case_id)
         if check_case:
             pass
+
+

@@ -7,6 +7,7 @@ class ProjectModel(TimeModel, MongoModel, ObjectidModel):
     def __init__(self):
         super().__init__()
         self.project_col = "project"
+        self.db[self.project_col].create_index([('name',1)],unique = True)
 
     def create_project(self, project_name):
         """创建项目
@@ -25,7 +26,7 @@ class ProjectModel(TimeModel, MongoModel, ObjectidModel):
         Returns:
              cursor:  可遍历的 cursor
         """
-        return self.find_datas(self.project_col, {}, {})
+        return self.find_datas(self.project_col, {})
 
     def check_project(self, project_id):
         """检查项目是否存在
@@ -39,6 +40,6 @@ class ProjectModel(TimeModel, MongoModel, ObjectidModel):
         # 判断能否转换成 object_id
         object_str = self.str_to_object(project_id)
         if object_str:
-            return self.find_data(self.project_col, {"_id": object_str}, {})
+            return self.find_data(self.project_col, {"_id": object_str})
         else:
             return

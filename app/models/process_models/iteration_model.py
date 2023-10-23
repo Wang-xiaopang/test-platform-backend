@@ -5,6 +5,7 @@ class IterationModel(ProjectModel):
     def __init__(self):
         super().__init__()
         self.iteration_col = "iteration"
+        self.db[self.iteration_col].create_index([('name',1),('project_id',1)],unique = True)
 
     def create_iteration(self, name, project_id, start_time, end_time):
         """创建迭代
@@ -21,7 +22,7 @@ class IterationModel(ProjectModel):
             return self.insert_data(
                 self.iteration_col,
                 {
-                    "project_id": check_project,
+                    "project_id": check_project.get('_id'),
                     "name": name,
                     "start_time": start_time,
                     "end_time": end_time,
@@ -59,4 +60,4 @@ class IterationModel(ProjectModel):
         # 检查是否有该项目
         check_project = self.check_project(project_id)
         if check_project:
-            return self.find_datas(self.iteration_col, {"project_id": check_project.get('_id')},{'_id':1,'name':1})
+            return self.find_datas(self.iteration_col, {"project_id": check_project.get('_id')})

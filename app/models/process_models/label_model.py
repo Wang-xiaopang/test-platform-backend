@@ -1,10 +1,12 @@
 from models.base_models.mongo_model import MongoModel
+from models.base_models.time_model import TimeModel
 
 
-class LabelModel(MongoModel):
+class LabelModel(MongoModel,TimeModel):
     def __init__(self):
         super().__init__()
         self.label_col = "label"
+        self.db[self.label_col].create_index([('name',1)],unique = True)
 
     def create_label(self, name, color):
         """创建迭代
@@ -15,7 +17,7 @@ class LabelModel(MongoModel):
         """
         # 检查是否有该项目
 
-        self.insert_data(
+        return self.insert_data(
             self.label_col,
             {
                 "name": name,
