@@ -27,35 +27,37 @@ class CaseModel(ModuleModel, DemandModel, LabelModel):
             if demand_data:
                 # 需求存在直接拿到需求id
                 demand_id = demand_data.get("_id")
-                pass
             else:
                 # 需求不存在，先新增拿到需求id
-                self.create_demand(
-                    demand_name,
-                    iteration_id,case_data.get('demand_url')
+                demand_id = self.create_demand(
+                    demand_name, iteration_id, case_data.get("demand_url")
                 )
-                # todo 查看是否能返回_id
-            pass
-        #读取二层数据   
-        cases = case_data.get('data')
+        # 读取二层数据
+        cases = case_data.get("data")
+        result = []
         for case in cases:
-            module_name = case.get('module_name')
-            second_cases = case.get('cases')
+            module_name = case.get("module_name")
+            # 判断模块是否存在,不在就新增
+            module_check = self.check_module_name(module_name)
+            if module_check:
+                module_id = module_check
+            else:
+                module_id = self.create_module(module_name, project_id)
+            second_cases = case.get("cases")
+            test_cases = []
+            for test_case in second_cases:
+                test_case["project_id"] = project_id
+                test_case["module_id"] = module_id
+                if demand_name:
+                    test_case["iteration_id"] = iteration_id
+                    test_case["demand_id"] = demand_id
+                test_cases.append(test_case)
+            result.extend(test_cases)
+        return result
 
+    def create_cases(self, data):
+        # 处理数据
 
-
-    def create_cases(self, project_id, case_data, iteration_id=None):
-        """添加多条用例
-
-        Args:
-            project_id (ObjcetId): 项目的逻辑id
-            case_data (dict(list(dict))): 测试用例数据
-            iteration_id (ObjcetId, optional): 迭代id. Defaults to None.
-        """
-        # 检查是否有该项目
-        check_project = self.check_project(project_id)
-        if check_project:
-            pass
 
     def check_case(self, case_id):
         """检查模块是否存在
