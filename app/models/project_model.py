@@ -14,7 +14,7 @@ class ProjectModel(TimeModel, MongoModel, ObjectidModel):
         Args:
             project_name ( str): 项目名称
         """
-        self.insert_data(
+        return self.insert_data(
             self.project_col,
             {"name": project_name, "created_at": self.get_now_timestamp()},
         )
@@ -25,7 +25,7 @@ class ProjectModel(TimeModel, MongoModel, ObjectidModel):
         Returns:
              cursor:  可遍历的 cursor
         """
-        return self.find_datas(self.project_col,{})
+        return self.find_datas(self.project_col, {})
 
     def check_project(self, project_id):
         """检查项目是否存在

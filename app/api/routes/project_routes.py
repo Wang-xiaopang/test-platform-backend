@@ -9,8 +9,16 @@ project_router = APIRouter()
 @project_router.post("/project")
 async def created_project(cr: CreateProject):
     project_model = ProjectModel()
-    project_model.create_project(cr.name)
-    return {"code": 0, "msg": f"创建{cr.name}项目成功", "data": {}}
+    project_id = project_model.create_project(cr.name)
+    if project_id:
+        data = {
+            "code": 0,
+            "msg": f"创建{cr.name}项目成功",
+            "data": {"project_id": str(project_id)},
+        }
+    else:
+        data = {"code": 1, "msg": f"创建{cr.name}项目失败", "data": {}}
+    return data
 
 
 @project_router.get("/project")

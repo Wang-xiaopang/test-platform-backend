@@ -1,19 +1,18 @@
 from models.project_model import ProjectModel
 
 
-class moduleModel(ProjectModel):
+class ModuleModel(ProjectModel):
     def __init__(self):
         super().__init__()
         self.module_col = "module"
 
-    def create_module(self, name, project_id, start_time, end_time):
-        """创建迭代
+    def create_module(self, name, project_id):
+        """创建模块
 
         Args:
             name(str) 迭代名称
             project_id (str):  项目 id
-            start_time (int):  时间戳
-            end_time (int):  时间戳
+
         """
         # 检查是否有该项目
         check_project = self.check_project(project_id)
@@ -23,18 +22,16 @@ class moduleModel(ProjectModel):
                 {
                     "project_id": check_project,
                     "name": name,
-                    "start_time": start_time,
-                    "end_time": end_time,
                     "created_at": self.get_now_timestamp(),
                     "status": 0,
                 },
             )
 
     def check_module(self, module_id):
-        """检查迭代是否存在
+        """检查模块是否存在
 
         Args:
-            module_id ( str):  迭代id
+            module_id ( str):  模块id
 
         Returns:
             cursor:  返回是否存在的 mongo 数据
@@ -45,18 +42,19 @@ class moduleModel(ProjectModel):
         else:
             return
 
-    def edit_module(self, module_id, status):
-        # 判断迭代是否存在
-        check_module = self.check_module(module_id)
-        if check_module:
-            self.update_data(
-                self.module_col,
-                {"_id": check_module.get("_id")},
-                {"status": status},
-            )
+    def check_module_name(self, module_name):
+        """检查模块名称是否存在
+
+        Args:
+            module_name ( str):  模块名称
+
+        Returns:
+            cursor:  返回是否存在的 mongo 数据
+        """
+        return self.find_data(self.module_col, {"name": module_name})
 
     def get_project_module(self, project_id):
-        # 检查是否有该项目
+        # 检查是否有该模块
         check_project = self.check_project(project_id)
         if check_project:
             return self.find_datas(self.module_col, {"project_id": check_project})

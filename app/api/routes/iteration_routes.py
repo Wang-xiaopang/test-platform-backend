@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from schemas.iteration_model import CreateIteration, EditIteraion,GetIteraion
+from schemas.iteration_schema import CreateIteration, EditIteraion
 from models.iteration_model import IterationModel
 
 iteration_router = APIRouter()
@@ -8,8 +8,18 @@ iteration_router = APIRouter()
 @iteration_router.post("/iteration")
 async def created_project(cr: CreateIteration):
     project_model = IterationModel()
-    project_model.create_iteration(cr.name, cr.project_id, cr.start_time, cr.end_time)
-    return {"code": 0, "msg": f"创建{cr.name}项目成功", "data": {}}
+    project_id = project_model.create_iteration(
+        cr.name, cr.project_id, cr.start_time, cr.end_time
+    )
+    if project_id:
+        data = {
+            "code": 0,
+            "msg": f"创建{cr.name}项目成功",
+            "data": {"project_id": project_id},
+        }
+    else:
+        data = {"code": 1, "msg": f"创建{cr.name}项目失败", "data": {}}
+    return data
 
 
 @iteration_router.get("/iteration/{project_id}")
