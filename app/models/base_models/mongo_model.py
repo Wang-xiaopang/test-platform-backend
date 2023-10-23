@@ -18,7 +18,7 @@ class MongoModel:
             data (dict): 需要加入的数据
         """
 
-        return self.db[col_name].insert_one(data).inserted_id
+        return self.db[col_name].insert_one(data)
 
     def insert_datas(self, col_name, datas):
         """添加多条数据
@@ -26,7 +26,7 @@ class MongoModel:
         Args:
             datas (list): 需要加入的多条数据
         """
-        return self.db[col_name].insert_many(datas).inserted_ids
+        return self.db[col_name].insert_many(datas)
 
     def update_data(self, col_name, tag_data, new_data):
         """更新一条数据
@@ -35,7 +35,7 @@ class MongoModel:
             tag_data (dict): 标识到需要更新的数据
             new_data (dict): 更新的数据
         """
-        return self.db[col_name].update_one(tag_data, {"$set": new_data}).upserted_id
+        return self.db[col_name].update_one(tag_data, {"$set": new_data})
 
     def update_datas(self, col_name, tag_data, new_datas):
         """更新多条数据
@@ -44,7 +44,7 @@ class MongoModel:
             tag_data (dict): 标识到需要更新的数据
             new_datas (dict): 更新的多条数据
         """
-        return self.db[col_name].update_one(tag_data, {"$set": new_datas}).upserted_id
+        return self.db[col_name].update_one(tag_data, {"$set": new_datas})
 
     def find_data(self, col_name, tag_data, need_data={"_id": 1}):
         """查找一条数据

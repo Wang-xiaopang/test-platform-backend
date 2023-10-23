@@ -1,4 +1,4 @@
-from models.project_model import ProjectModel
+from models.process_models.project_model import ProjectModel
 
 
 class ModuleModel(ProjectModel):
@@ -23,7 +23,6 @@ class ModuleModel(ProjectModel):
                     "project_id": check_project,
                     "name": name,
                     "created_at": self.get_now_timestamp(),
-                    "status": 0,
                 },
             )
 

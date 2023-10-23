@@ -1,4 +1,4 @@
-from models.project_model import ProjectModel
+from models.process_models.project_model import ProjectModel
 
 
 class IterationModel(ProjectModel):
@@ -18,7 +18,7 @@ class IterationModel(ProjectModel):
         # 检查是否有该项目
         check_project = self.check_project(project_id)
         if check_project:
-            self.insert_data(
+            return self.insert_data(
                 self.iteration_col,
                 {
                     "project_id": check_project,
@@ -49,7 +49,7 @@ class IterationModel(ProjectModel):
         # 判断迭代是否存在
         check_iteration = self.check_iteration(iteration_id)
         if check_iteration:
-            self.update_data(
+            return self.update_data(
                 self.iteration_col,
                 {"_id": check_iteration.get("_id")},
                 {"status": status},
@@ -59,6 +59,4 @@ class IterationModel(ProjectModel):
         # 检查是否有该项目
         check_project = self.check_project(project_id)
         if check_project:
-            return self.find_datas(self.iteration_col, {"project_id": check_project})
-        else:
-            return
+            return self.find_datas(self.iteration_col, {"project_id": check_project.get('_id')},{'_id':1,'name':1})

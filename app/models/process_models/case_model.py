@@ -1,6 +1,6 @@
-from models.module_model import ModuleModel
-from models.demand_model import DemandModel
-from models.label_model import LabelModel
+from models.process_models.module_model import ModuleModel
+from models.process_models.demand_model import DemandModel
+from models.process_models.label_model import LabelModel
 
 
 class CaseModel(ModuleModel, DemandModel, LabelModel):
@@ -57,7 +57,8 @@ class CaseModel(ModuleModel, DemandModel, LabelModel):
 
     def create_cases(self, data):
         # 处理数据
-
+        result = self.case_data_deal(data)
+        return self.insert_datas(self.case_col, result)
 
     def check_case(self, case_id):
         """检查模块是否存在
@@ -81,3 +82,17 @@ class CaseModel(ModuleModel, DemandModel, LabelModel):
             return self.find_datas(self.case_col, {"project_id": check_project})
         else:
             return
+
+    def put_test_case(self, case_id, change_data):
+        # 检查是否有该用例
+        check_case = self.check_case(case_id)
+        if check_case:
+            return self.update_data(self.case_col, {"_id": case_id}, change_data)
+        else:
+            return
+
+    def delete_case(self, case_id):
+        # 检查是否有该用例
+        check_case = self.check_case(case_id)
+        if check_case:
+            pass

@@ -1,4 +1,4 @@
-from models.iteration_model import IterationModel
+from models.process_models.iteration_model import IterationModel
 
 
 class DemandModel(IterationModel):
@@ -17,14 +17,13 @@ class DemandModel(IterationModel):
         # 检查是否有该项目
         check_iteration = self.check_iteration(iteration_id)
         if check_iteration:
-            self.insert_data(
+            return self.insert_data(
                 self.demand_col,
                 {
                     "iteration_id": check_iteration,
                     "name": name,
                     "address": address,
                     "created_at": self.get_now_timestamp(),
-                    "status": 0,
                 },
             )
 
@@ -54,20 +53,10 @@ class DemandModel(IterationModel):
         """
         return self.find_data(self.demand_col, {"name": demand_name})
 
-    def edit_demand(self, demand_id, status):
-        # 判断需求是否存在
-        check_demand = self.check_demand(demand_id)
-        if check_demand:
-            self.update_data(
-                self.demand_col,
-                {"_id": check_demand.get("_id")},
-                {"status": status},
-            )
-
     def get_iteration_demand(self, iteration_id):
         # 检查是否有该需求
         check_iteration = self.check_iteration(iteration_id)
         if check_iteration:
-            return self.find_datas(self.demand_col, {"iteration_id": iteration_id})
+            return self.find_datas(self.demand_col, {"iteration_id": iteration_id},{})
         else:
             return

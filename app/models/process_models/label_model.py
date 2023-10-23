@@ -1,4 +1,4 @@
-from models.mongo_model import MongoModel
+from models.base_models.mongo_model import MongoModel
 
 
 class LabelModel(MongoModel):

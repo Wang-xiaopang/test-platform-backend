@@ -1,6 +1,6 @@
-from models.mongo_model import MongoModel
-from models.time_model import TimeModel
-from models.objectid_model import ObjectidModel
+from models.base_models.mongo_model import MongoModel
+from models.base_models.time_model import TimeModel
+from models.base_models.objectid_model import ObjectidModel
 
 
 class ProjectModel(TimeModel, MongoModel, ObjectidModel):
@@ -25,7 +25,7 @@ class ProjectModel(TimeModel, MongoModel, ObjectidModel):
         Returns:
              cursor:  可遍历的 cursor
         """
-        return self.find_datas(self.project_col, {})
+        return self.find_datas(self.project_col, {}, {})
 
     def check_project(self, project_id):
         """检查项目是否存在
@@ -39,6 +39,6 @@ class ProjectModel(TimeModel, MongoModel, ObjectidModel):
         # 判断能否转换成 object_id
         object_str = self.str_to_object(project_id)
         if object_str:
-            return self.find_data(self.project_col, {"_id": object_str}).get("_id")
+            return self.find_data(self.project_col, {"_id": object_str}, {})
         else:
             return
