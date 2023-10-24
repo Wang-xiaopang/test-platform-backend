@@ -19,7 +19,7 @@ async def created_project(cr: CreateDemand):
         else:
             data = {"code": 1, "msg": f"创建{cr.name}项目失败", "data": {}}
     except pymongo.errors.DuplicateKeyError:
-        data = {"code": 1, "msg": f"项目已存在,请勿重复创建", "data": {}}
+        data = {"code": 1, "msg": f"需求已存在,请勿重复创建", "data": {}}
     return data
 
 

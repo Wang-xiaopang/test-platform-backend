@@ -77,7 +77,7 @@ class CaseModel(DemandModel,ModuleModel):
         # 检查是否有该模块
         check_project = self.check_project(project_id)
         if check_project:
-            return self.find_datas(self.case_col, {"project_id": check_project})
+            return self.find_datas(self.case_col, {"project_id": check_project.get('_id')})
         else:
             return
 
@@ -85,7 +85,7 @@ class CaseModel(DemandModel,ModuleModel):
         # 检查是否有该用例
         check_case = self.check_case(case_id)
         if check_case:
-            return self.update_data(self.case_col, {"_id": case_id}, change_data)
+            return self.update_data(self.case_col, {"_id": check_case.get('_id')}, change_data)
         else:
             return
 

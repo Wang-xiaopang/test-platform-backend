@@ -9,7 +9,6 @@ project_router = APIRouter()
 @project_router.post("/project")
 async def created_project(cr: CreateProject):
     try:
-        print(cr)
         cursor = ProjectModel().create_project(cr.name)
         if cursor:
             data = {
@@ -28,5 +27,5 @@ async def created_project(cr: CreateProject):
 async def get_projects():
     project_model = ProjectModel()
     cursor = project_model.get_projects()
-    datas = [{i.get('name'):str(i.get("_id"))} for i in cursor]
+    datas = [{i.get("name"): str(i.get("_id"))} for i in cursor]
     return {"code": 0, "msg": f"查询成功", "data": datas}

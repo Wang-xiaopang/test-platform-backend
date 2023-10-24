@@ -11,20 +11,19 @@ async def created_project(cr: CreateCases):
     if cursor:
         data = {
             "code": 0,
-            "msg": f"从项目{cr.project_id}创建用例成功",
+            "msg":f"创建{len(cursor.inserted_ids)}条用例成功",
             "data": {},
         }
     else:
-        data = {"code": 1, "msg": f"从项目{cr.project_id}创建用例失败", "data": {}}
+        data = {"code": 1, "msg": f"创建用例失败", "data": {}}
     return data
 
 
 @case_router.get("/case/{project_id}")
 async def get_projects(project_id: str):
-    project_model = CaseModel()
-    cursor = project_model.get_project_case(project_id)
+    cursor = CaseModel().get_project_case(project_id)
     if cursor:
-        datas = [{i.get("name"): str(i.get("_id"))} for i in cursor]
+        datas = [{i.get("case_name"): str(i.get("_id"))} for i in cursor]
         data = {"code": 0, "msg": "查询成功", "data": datas}
     else:
         data = {"code": 1, "msg": "无数据", "data": {}}
@@ -33,7 +32,7 @@ async def get_projects(project_id: str):
 
 @case_router.put("/case")
 async def get_projects(cr: EditCase):
-    cursor = CaseModel().edit_case(cr.case_id, cr.change_data)
+    cursor = CaseModel().put_test_case(cr.case_id, cr.change_data)
     if cursor:
         data = {
             "code": 0,
