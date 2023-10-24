@@ -4,11 +4,13 @@ from api.routes.demand_routes import demand_router
 from api.routes.module_routes import module_router
 from api.routes.label_routes import label_router
 from api.routes.case_routes import case_router
+from api.routes.testcase_routes import testcase_router
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 from starlette.status import HTTP_422_UNPROCESSABLE_ENTITY
+
 
 
 def all_routes():
@@ -19,6 +21,7 @@ def all_routes():
         module_router,
         label_router,
         case_router,
+        testcase_router,
     ]
 
 
