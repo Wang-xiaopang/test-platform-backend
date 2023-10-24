@@ -5,20 +5,23 @@ import os
 from models.base_models.time_model import TimeModel
 
 class XmindModel(TimeModel):
+    def __init__(self) -> None:
+        super().__init__()
+        self.path = ''
+        self.times_ = ''
 
     async def upload_file(self, file):
         file1 = await file.read()
         filename = file.filename
         file_type = filename.split('.')[-1]
         if file_type == 'xmind':
-            times_ = self.get_chinese_time()
-            path = f'testfile/{times_}/{filename}'
-            if not os.path.exists(f'testfile/{times_}'):
-                os.makedirs(f'testfile/{times_}')
-            with open(path, 'wb') as f:
+            self.times_ = self.get_chinese_time()
+            self.path = f'testfile/{self.times_}/{filename}'
+            if not os.path.exists(f'testfile/{self.times_}'):
+                os.makedirs(f'testfile/{self.times_}')
+            with open(self.path, 'wb') as f:
                 f.write(file1)
-
-            return path
+            return self.path
 
     def parser_file(self, path):
         data = {'data': []}
@@ -60,7 +63,7 @@ class XmindModel(TimeModel):
                                 else:
                                     step_tag = makers
                         except TypeError as e:
-                            logger.warning('优先级格式有误', e)
+                            pass
 
                         case_except = case_steps['topics'][0]
                         case_data['cases'].append({'case_name': case_name['title'],
@@ -74,3 +77,11 @@ class XmindModel(TimeModel):
         except Exception as e:
             pass
         return data
+    
+    def del_xmind(self, path):
+        os.remove(path)
+        if os.path.exists(path):
+            return False
+        else:
+            return True 
+

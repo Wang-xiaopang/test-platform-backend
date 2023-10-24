@@ -25,3 +25,17 @@ async def upload_file(file: UploadFile = File()):
 def parser_xmind(filepath:str):
     xmind_model = XmindModel().parser_file(filepath)
     return xmind_model
+
+@testcase_router.get("/xmind/del_file/{filepath:path}")
+def del_file(filepath:str):
+    # filepath = filepath.split('/')[:1]
+    # filepath = ''.join(filepath)
+    xmind_model = XmindModel().del_xmind(filepath)
+    if xmind_model:
+        return {"code":0,
+                "msg":"删除成功",
+                "data":{}}
+    else:
+        return {"code":1,
+                "msg":"删除失败",
+                "data":{}}
