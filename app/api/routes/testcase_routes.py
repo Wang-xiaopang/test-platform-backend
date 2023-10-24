@@ -4,7 +4,7 @@ from models.base_models.xmind_model import XmindModel
 testcase_router = APIRouter()
 
 
-@testcase_router.post("/upload")
+@testcase_router.post("/xmind/upload")
 async def upload_file(file: UploadFile = File()):
     xmind_model = XmindModel()
     path = await xmind_model.upload_file(file)
@@ -21,7 +21,7 @@ async def upload_file(file: UploadFile = File()):
             "data":{}
         }
 
-@testcase_router.get("/parser/{filepath:path}")
+@testcase_router.get("/xmind/parser/{filepath:path}")
 def parser_xmind(filepath:str):
     xmind_model = XmindModel().parser_file(filepath)
     return xmind_model
